@@ -1,19 +1,22 @@
+# import os.path
+from os import path
 from app.tweets import Tweet
+from app.analyze import Analyze
 
 if __name__ == "__main__":
-
-    state = True
-    while (state):
-        screenName = input("Hi there! Please enter your Twitter username\n")
+    loop = True
+    while(loop):
+        screenName = input("Hi there! Please enter a Twitter username: ")
 
         if(screenName == ""):
-            print("You must enter a value\n")
-            screenName = "NdirituDayvd"
-            # break
-        elif(screenName.lower() == "exit"):
+            print("Enter a valid username!\n")
+            break
+        elif(screenName.lower() == "quit"):
             state = False
             break
 
-        tweep = Tweet(screenName)
-        tweep.fetch()
+        if(not path.exists(f"tweets/{screenName}.csv")):
+            Tweet(screenName).fetch()
+        Analyze(screenName).analyze()
+        print("Type 'quit' to exit.\n\n")
         pass

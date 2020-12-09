@@ -1,1 +1,4 @@
 .env
+tweets/
+app/__pycache__/
+.vscode/

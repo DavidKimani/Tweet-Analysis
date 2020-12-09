@@ -2,6 +2,7 @@ import tweepy # https://github.com/tweepy/tweepy
 from dotenv import load_dotenv
 import os
 import csv
+import json
 load_dotenv()
 class Tweet:
     # Visit https://developer.twitter.com/en/apps/ to get your keys
@@ -23,7 +24,7 @@ class Tweet:
             self.username = username
 
     def fetch(self):
-        print("Starting engines...")
+        print(f"Summoning @{self.username}'s tweets... 🔮🧙‍♂️")
         # Twitter only allows access to a users most recent 3240 tweets with this method
 
         # Authorize twitter, initialize tweepy
@@ -38,7 +39,6 @@ class Tweet:
         if(self.username[0] == "@"):
             self.username = self.username[1:]
 
-        print("Fetching tweets ...")
         # Make initial request for most recent tweets (200 is the maximum allowed count)
         new_tweets = api.user_timeline(self.username, count=200)
 
@@ -65,18 +65,18 @@ class Tweet:
 
         self.tweets = alltweets
 
-        print("Finished fetching tweets.\n\n")
+        print("Done.\n")
         return self.processTweets()
 
     def processTweets(self):
         print('Processing tweets...')
 
         # Transform the tweepy tweets into a 2D array that will populate the csv
-        outtweets = [[tweet.text.encode("utf-8"), tweet.user.description, tweet.lang ] for tweet in self.tweets]
+        outtweets = [[tweet._json['text'].encode('ascii', 'ignore'), tweet.user.description, tweet.lang ] for tweet in self.tweets]
 
         print(f"\tWriting {len(self.tweets)} tweets {self.username}.csv\n")
 
-        with open(f"tweets/{self.username}.csv", 'w') as f:
+        with open(f"tweets/{self.username}.csv", 'w', newline='') as f:
             writer = csv.writer(f)
 
             # Write CSV Header
