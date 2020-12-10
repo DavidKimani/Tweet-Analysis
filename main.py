@@ -1,26 +1,22 @@
-import tweepy # https://github.com/tweepy/tweepy
-import csv
-import json
-import emoji
+# import os.path
+from os import path
+from app.tweets import Tweet
+from app.analyze import Analyze
 
- 
-# import pandas as pd
-# import re #regular expression
-# from textblob import TextBlob
-# import string
-# import preprocessor as p
- 
-# from threading import thread
- 
-# from credentials import *
- 
-# Visit https://developer.twitter.com/en/apps/ to get your keys
-# api_key = ""
-# api_secret = ""
-# access_token = ""
-# access_secret = ""
-# 
-# 
-# if __name__ == "__main__":
-    print("Hello world")
-    pass
+if __name__ == "__main__":
+    loop = True
+    while(loop):
+        screenName = input("Hi there! Please enter a Twitter username: ")
+
+        if(screenName == ""):
+            print("Enter a valid username!\n")
+            break
+        elif(screenName.lower() == "quit"):
+            state = False
+            break
+
+        if(not path.exists(f"tweets/{screenName}.csv")):
+            Tweet(screenName).fetch()
+        Analyze(screenName).analyze()
+        print("Type 'quit' to exit.\n\n")
+        pass
