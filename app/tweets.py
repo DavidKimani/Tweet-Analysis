@@ -72,9 +72,9 @@ class Tweet:
         print('Processing tweets...')
 
         # Transform the tweepy tweets into a 2D array that will populate the csv
-        outtweets = [[tweet._json['text'].encode('ascii', 'ignore'), tweet.user.description, tweet.lang ] for tweet in self.tweets]
+        outtweets = [[tweet.text, tweet.user.description, tweet.lang ] for tweet in self.tweets]
 
-        print(f"\tWriting {len(self.tweets)} tweets {self.username}.csv\n")
+        print(f"\tSaving @{self.username}'s\n")
 
         with open(f"tweets/{self.username}.csv", 'w', newline='', encoding="utf-8") as f:
             writer = csv.writer(f)

@@ -151,7 +151,7 @@ class Analyze:
 
         readTweets = []
 
-        with open(f"tweets/{self.username}.csv") as csv_file:
+        with open(f"tweets/{self.username}.csv", encoding="utf-8") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
@@ -165,7 +165,7 @@ class Analyze:
                     if(row[2] == 'en'):
                         readTweets.append(row[0])
                     line_count += 1
-            print(f'Processed {line_count} tweets.')
+            print(f'Processing {line_count} tweets.')
 
         self.tweets = readTweets
         return
