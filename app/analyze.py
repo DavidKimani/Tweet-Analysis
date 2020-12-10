@@ -1,4 +1,5 @@
-import re, string, random, csv, nltk, emoji
+import re, string, random, csv, nltk, pickle
+from os import path
 from nltk import FreqDist
 from nltk import classify
 from nltk.tag import pos_tag
@@ -30,7 +31,11 @@ class Analyze:
     def analyze(self):
         print("Starting engines 🏭\n")
 
-        self.train()
+        if(not path.exists(f"models/classifier.pickle")):
+            self.train()
+        else:
+            self.classifier = pickle.load(open("models/classifier.pickle", "rb"))
+
         self.ReadTweets()
         self.parseTweets()
         self.aggregate()
@@ -158,7 +163,7 @@ class Analyze:
                     continue
                 else:
                     if(row[2] == 'en'):
-                        readTweets.append(emoji.demojize(row[0]))
+                        readTweets.append(row[0])
                     line_count += 1
             print(f'Processed {line_count} tweets.')
 
@@ -200,6 +205,7 @@ class Analyze:
 
         print("Lift off🚀")
         self.classifier = NaiveBayesClassifier.train(train_data)
+        pickle.dump(self.classifier, open("models/classifier.pickle", "wb"))
 
         print("Traing complete. Accuracy:", classify.accuracy(self.classifier, test_data))
 
