@@ -76,7 +76,7 @@ class Tweet:
 
         print(f"\tWriting {len(self.tweets)} tweets {self.username}.csv\n")
 
-        with open(f"tweets/{self.username}.csv", 'w', newline='') as f:
+        with open(f"tweets/{self.username}.csv", 'w', newline='', encoding="utf-8") as f:
             writer = csv.writer(f)
 
             # Write CSV Header
